@@ -2,6 +2,9 @@
 let taskList = JSON.parse(localStorage.getItem("tasks"));
 let nextId = JSON.parse(localStorage.getItem("nextId"));
 
+//bring in modal div
+
+const taskModal = $('#formModal');
 
 // Todo: create a function to generate a unique task id
 function generateTaskId() {
@@ -35,6 +38,13 @@ function handleDrop(event, ui) {
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
+    //make dat field into date selector
+    taskModal.on('click','.btnSubmit',function(){
+        const taskTitle = $('#taskTitle').val();
+        const date = $('#datepicker').val();
+        const comment = $('#comment-input').val();
+        console.log(taskTitle,date,comment);
+    });
 
 });
 
