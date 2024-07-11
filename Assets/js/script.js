@@ -17,11 +17,17 @@ function generateTaskId() {
 
 // Todo: create a function to create a task card
 function createTaskCard(task) {
-    
+    console.log("this is a function");
 }
 
 // Todo: create a function to render the task list and make cards draggable
 function renderTaskList() {
+
+    //pull section where lists will go
+    const toDoList = $('#todo-cards');
+    const inProgressList = $('#in-progress-cards');
+    const doneList = $('#done-cards');
+
 
 }
 
@@ -41,6 +47,7 @@ function handleAddTask(event){
     taskList.push(task);
     nextId.push(task.id);
     
+    console.log(taskList);
 
     //save the arrays just in case user refreshes
     localStorage.setItem('tasks',JSON.stringify(taskList));
