@@ -23,12 +23,19 @@ function createTaskCard(task) {
     const cardDate =$('<p>');
     const deleteBtn =$('<a>');
 
-    //nest divs in proper order to form card
+    //nest elements in proper order to form card
     taskCard.append(cardHeader);
     taskCard.append(cardBody);
+    cardBody.append(cardComment);
+    cardBody.append(cardDate);
+    cardBody.append(deleteBtn);
 
     //add content to cards
     cardHeader.text(task.title);
+    cardComment.text(tast.comment);
+    cardDate.text(task.date.format('MM DD YYYY'));
+    deleteBtn.text('delete');
+
 
     // check for date to add color to delete button and card background and add all classes for proper card styling
 
@@ -83,8 +90,6 @@ function handleAddTask(event){
     //push the task object to the current array for use in this session
     taskList.push(task);
     nextId.push(task.id);
-    
-    console.log(taskList);
 
     //save the arrays just in case user refreshes
     localStorage.setItem('tasks',JSON.stringify(taskList));
@@ -131,7 +136,7 @@ $(document).ready(function () {
 
 
     renderTaskList();
-
+    console.log(taskList);
     //save button
     taskModal.on('click','.btnSubmit',handleAddTask);
 
