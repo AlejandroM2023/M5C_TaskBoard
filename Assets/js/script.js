@@ -19,11 +19,18 @@ function createTaskCard(task) {
     const taskCard = $('<div>');
     const cardHeader = $('<div>');
     const cardBody = $('<div>');
+    const cardComment =$('<p>');
+    const cardDate =$('<p>');
+    const deleteBtn =$('<a>');
 
+    //nest divs in proper order to form card
+    taskCard.append(cardHeader);
+    taskCard.append(cardBody);
 
-    //add class for bootstrap styling
+    //add content to cards
+    cardHeader.text(task.title);
 
-    // check for date to add color to delete button and card background
+    // check for date to add color to delete button and card background and add all classes for proper card styling
 
 
 
@@ -52,9 +59,13 @@ function renderTaskList() {
 
     //add sortable lists to page
     toDoList.append(sortableToDo);
-    toDoList.append(sortableInProgress);
-    toDoList.append(sortableDone);
+    inProgressList.append(sortableInProgress);
+    doneList.append(sortableDone);
 
+    //loop through array to create card()
+    for(const task of taskList){
+        createTaskCard(task);
+    }
 }
 
 // Todo: create a function to handle adding a new task
