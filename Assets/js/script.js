@@ -2,9 +2,7 @@
 let taskList = JSON.parse(localStorage.getItem("tasks"));
 let nextId = JSON.parse(localStorage.getItem("nextId"));
 
-//bring in modal div
 
-const taskModal = $('#formModal');
 
 // Todo: create a function to generate a unique task id
 function generateTaskId() {
@@ -17,18 +15,99 @@ function generateTaskId() {
 
 // Todo: create a function to create a task card
 function createTaskCard(task) {
+    //create card elements
+    const taskCard = $('<div>');
+    const cardHeader = $('<div>');
+    const cardBody = $('<div>');
+    const cardComment =$('<p>');
+    const cardDate =$('<p>');
+    const deleteBtn =$('<a>');
+
+    //nest elements in proper order to form card
+    taskCard.append(cardHeader);
+    taskCard.append(cardBody);
+    cardBody.append(cardComment);
+    cardBody.append(cardDate);
+    cardBody.append(deleteBtn);
+
+    //add content to cards
+    cardHeader.text(task.title);
+    cardComment.text(task.comment);
+    cardDate.text(task.date);
+    deleteBtn.text('delete');
+
+
+    //check for date to add color to delete button and card background
+
+    // all classes for proper card styling(use variable at end to specify the color)
+    taskCard.addClass('card');
+    cardHeader.addClass('card-header');
+    cardBody.addClass('card-body');
+    cardComment.addClass('card-text');
+    cardDate.addClass('card-text');
+    deleteBtn.addClass('btn btn-primary');
+
+
+
+
     
+
+    //bring in lists to append cards to
+    const todoList = $('#toDoSortableList');
+    const inProgressList = $('#inProgressSortableList');
+    const doneList = $('#doneSortableList');
+
+    //check which list and add to list
+    if(task.category == 't'){
+        todoList.append(taskCard);
+    }
+    if(task.category == 'i'){
+        inProgressList.append(taskCard);
+    }
+    if(task.category == 'd'){
+        doneList.append(taskCard);
+    }
 }
 
 // Todo: create a function to render the task list and make cards draggable
 function renderTaskList() {
 
+    //pull section where lists will go
+    const toDoList = $('#todo-cards');
+    const inProgressList = $('#in-progress-cards');
+    const doneList = $('#done-cards');
+
+    //create the sortables
+    const sortableToDo = $('<ul>');
+    const sortableInProgress = $('<ul>');
+    const sortableDone = $('<ul>');
+
+    // add sortable functionality to lists
+    sortableToDo.sortable();
+    sortableInProgress.sortable();
+    sortableDone.sortable();
+
+    //add id to select for other classes
+    sortableToDo.attr('id','toDoSortableList');
+    sortableInProgress.attr('id','inProgressSortableList');
+    sortableDone.attr('id','doneSortableList');
+
+
+    //add sortable lists to page
+    toDoList.append(sortableToDo);
+    inProgressList.append(sortableInProgress);
+    doneList.append(sortableDone);
+
+    //loop through array to create card()
+    for(const task of taskList){
+        createTaskCard(task);
+    }
 }
 
 // Todo: create a function to handle adding a new task
 function handleAddTask(event){
     const taskTitle = $('#taskTitle').val();
-    const date = dayjs($('#datepicker').val());
+    const date = dayjs($('#datepicker').val()).format('MM/DD/YYYY');
     const comment = $('#comment-input').val();
     const task = { title: taskTitle,
                     date: date,
@@ -40,7 +119,6 @@ function handleAddTask(event){
     //push the task object to the current array for use in this session
     taskList.push(task);
     nextId.push(task.id);
-    
 
     //save the arrays just in case user refreshes
     localStorage.setItem('tasks',JSON.stringify(taskList));
@@ -72,13 +150,24 @@ $( function() {
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
+    //check if our localStorage pull was null
     if(taskList == null){
         taskList = [];
     }
     if(nextId == null){
         nextId = [];
     }
+
+    //bring in modal div
+    const taskModal = $('#formModal');
     
+
+
+
+    renderTaskList();
+
+    console.log(taskList);
+    //save button
     taskModal.on('click','.btnSubmit',handleAddTask);
 
 });
