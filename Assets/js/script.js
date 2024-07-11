@@ -28,6 +28,25 @@ function renderTaskList() {
     const inProgressList = $('#in-progress-cards');
     const doneList = $('#done-cards');
 
+    //create the sortables
+    const sortableToDo = $('<ul>');
+    const sortableInProgress = $('<ul>');
+    const sortableDone = $('<ul>');
+
+    // add sortable functionality to make them sortable
+    sortableToDo.sortable();
+
+    const li1 = $('<li>');
+    li1.text('sup');
+
+    const li2 = $('<li>');
+    li2.text('no');
+
+    sortableToDo.append(li1);
+    sortableToDo.append(li2);
+
+    
+
 
 }
 
@@ -86,6 +105,7 @@ $(document).ready(function () {
         nextId = [];
     }
     
+    renderTaskList();
     taskModal.on('click','.btnSubmit',handleAddTask);
 
 });
