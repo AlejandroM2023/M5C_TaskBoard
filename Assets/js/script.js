@@ -32,8 +32,8 @@ function createTaskCard(task) {
 
     //add content to cards
     cardHeader.text(task.title);
-    cardComment.text(tast.comment);
-    cardDate.text(task.date.format('MM DD YYYY'));
+    cardComment.text(task.comment);
+    cardDate.text(task.date);
     deleteBtn.text('delete');
 
     // all classes for proper card styling
@@ -51,8 +51,14 @@ function createTaskCard(task) {
     
 
     //bring in lists to append cards to
+    const todoList = $('#toDoSortableList');
+    const inProgressList = $('#inProgressSortableList');
+    const doneList = $('#doneSortableList');
 
-    if()
+    //check which list and add to list
+    if(task.category == 't'){
+        todoList.append(taskCard);
+    }
 
 }
 
@@ -152,6 +158,7 @@ $(document).ready(function () {
 
 
     renderTaskList();
+
     console.log(taskList);
     //save button
     taskModal.on('click','.btnSubmit',handleAddTask);
