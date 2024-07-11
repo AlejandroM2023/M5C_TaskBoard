@@ -2,9 +2,7 @@
 let taskList = JSON.parse(localStorage.getItem("tasks"));
 let nextId = JSON.parse(localStorage.getItem("nextId"));
 
-//bring in modal div
 
-const taskModal = $('#formModal');
 
 // Todo: create a function to generate a unique task id
 function generateTaskId() {
@@ -17,7 +15,21 @@ function generateTaskId() {
 
 // Todo: create a function to create a task card
 function createTaskCard(task) {
-    console.log("this is a function");
+    //create card elements
+    const taskCard = $('<div>');
+    const cardHeader = $('<div>');
+    const cardBody = $('<div>');
+
+
+    //add class for bootstrap styling
+
+    // check for date to add color to delete button and card background
+
+
+
+    //check the category and append to that list
+
+
 }
 
 // Todo: create a function to render the task list and make cards draggable
@@ -33,20 +45,15 @@ function renderTaskList() {
     const sortableInProgress = $('<ul>');
     const sortableDone = $('<ul>');
 
-    // add sortable functionality to make them sortable
+    // add sortable functionality to lists
     sortableToDo.sortable();
+    sortableInProgress.sortable();
+    sortableDone.sortable();
 
-    const li1 = $('<li>');
-    li1.text('sup');
-
-    const li2 = $('<li>');
-    li2.text('no');
-
-    sortableToDo.append(li1);
-    sortableToDo.append(li2);
-
-    
-
+    //add sortable lists to page
+    toDoList.append(sortableToDo);
+    toDoList.append(sortableInProgress);
+    toDoList.append(sortableDone);
 
 }
 
@@ -98,14 +105,23 @@ $( function() {
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
+    //check if our localStorage pull was null
     if(taskList == null){
         taskList = [];
     }
     if(nextId == null){
         nextId = [];
     }
+
+    //bring in modal div
+    const taskModal = $('#formModal');
     
+
+
+
     renderTaskList();
+
+    //save button
     taskModal.on('click','.btnSubmit',handleAddTask);
 
 });
