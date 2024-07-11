@@ -36,13 +36,23 @@ function createTaskCard(task) {
     cardDate.text(task.date.format('MM DD YYYY'));
     deleteBtn.text('delete');
 
+    // all classes for proper card styling
+    taskCard.addClass('card');
+    cardHeader.addClass('card-header');
+    cardBody.addClass('card-body');
+    cardComment.addClass('card-text');
+    cardDate.addClass('card-text');
+    deleteBtn.addClass('btn btn-primary');
 
-    // check for date to add color to delete button and card background and add all classes for proper card styling
+        //check for date to add color to delete button and card background
 
 
 
-    //check the category and append to that list
+    
 
+    //bring in lists to append cards to
+
+    if()
 
 }
 
@@ -63,6 +73,12 @@ function renderTaskList() {
     sortableToDo.sortable();
     sortableInProgress.sortable();
     sortableDone.sortable();
+
+    //add id to select for other classes
+    sortableToDo.attr('id','toDoSortableList');
+    sortableInProgress.attr('id','inProgressSortableList');
+    sortableDone.attr('id','doneSortableList');
+
 
     //add sortable lists to page
     toDoList.append(sortableToDo);
