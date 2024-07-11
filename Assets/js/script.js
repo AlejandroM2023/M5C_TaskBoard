@@ -36,7 +36,10 @@ function createTaskCard(task) {
     cardDate.text(task.date);
     deleteBtn.text('delete');
 
-    // all classes for proper card styling
+
+    //check for date to add color to delete button and card background
+
+    // all classes for proper card styling(use variable at end to specify the color)
     taskCard.addClass('card');
     cardHeader.addClass('card-header');
     cardBody.addClass('card-body');
@@ -44,7 +47,6 @@ function createTaskCard(task) {
     cardDate.addClass('card-text');
     deleteBtn.addClass('btn btn-primary');
 
-        //check for date to add color to delete button and card background
 
 
 
@@ -59,7 +61,12 @@ function createTaskCard(task) {
     if(task.category == 't'){
         todoList.append(taskCard);
     }
-
+    if(task.category == 'i'){
+        inProgressList.append(taskCard);
+    }
+    if(task.category == 'd'){
+        doneList.append(taskCard);
+    }
 }
 
 // Todo: create a function to render the task list and make cards draggable
@@ -100,7 +107,7 @@ function renderTaskList() {
 // Todo: create a function to handle adding a new task
 function handleAddTask(event){
     const taskTitle = $('#taskTitle').val();
-    const date = dayjs($('#datepicker').val());
+    const date = dayjs($('#datepicker').val()).format('MM/DD/YYYY');
     const comment = $('#comment-input').val();
     const task = { title: taskTitle,
                     date: date,
