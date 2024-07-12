@@ -58,7 +58,7 @@ function createTaskCard(task) {
     deleteBtn.addClass('btn btn-danger');
 
     //add id to card
-    taskCard.data("taskId",task.id);
+    taskCard.attr("id",task.id);
 
 
     taskCard.draggable({
@@ -100,8 +100,9 @@ function renderTaskList() {
 
     
     //loop through array to create card()
-    for(const task of taskList){
-        createTaskCard(task);
+    for(const taskId of nextId){
+        const taskItem = taskList.find((element)=> element.id == taskId);
+        createTaskCard(taskItem);
     }
 }
 
@@ -133,12 +134,14 @@ function handleAddTask(event){
 
 // Todo: create a function to handle deleting a task
 function handleDeleteTask(event){
-    //get task id and index of element in the array
-    const cardId = $(event.target).parent().parent().data("taskId");
-    const index = nextId.indexOf(cardId);
 
-    //remove from local array
-    taskList.splice(index,1);
+    //get task id,index of element in nextId and item from task List
+    const cardId = $(event.target).parent().parent().attr("id");
+    const index = nextId.indexOf(cardId);
+    const taskItem = taskList.find((element)=> element.id == cardId);
+
+    //remove from global array
+    taskList.splice(taskList.indexOf(taskItem),1);
     nextId.splice(index,1);
 
     //save the arrays just in case user refreshes
@@ -152,7 +155,35 @@ function handleDeleteTask(event){
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
-    console.log("its at the in-progress");
+
+    //get array of items for every sortable list
+    const combineArr = $('#todo-cards').sortable("toArray").concat($('#in-progress-cards').sortable("toArray"),$('#done-cards').sortable("toArray"));
+
+    
+    //get moved item
+    const taskItem = taskList.find((element)=> element.id == ui.item.attr('id'));
+    const itemIndex = taskList.indexOf(taskItem);
+
+    //change category
+    if(event.target.id =='todo-cards' && taskItem.category !== 't'){
+        taskItem.category = 't';
+    }else if(event.target.id =='in-progress-cards' && taskItem.category !== 'i'){
+        taskItem.category = 'i';
+    }else if(event.target.id =='done-cards' && taskItem.category !== 'd'){
+        taskItem.category = 'd';
+    }
+
+    //update task item in array
+    taskList[itemIndex] = taskItem;
+
+    //rupdate gloabl array
+
+    nextId = combineArr;
+
+    //save changes to array
+    localStorage.setItem('tasks',JSON.stringify(taskList));
+    localStorage.setItem('nextId',JSON.stringify(combineArr));
+
 }
 
 
@@ -177,10 +208,12 @@ $(document).ready(function () {
     $( "#datepicker" ).datepicker();
 
 
-    //add dragable funtionality
+    //add dragable funtionality and order save
     $("#todo-cards,#in-progress-cards,#done-cards").sortable({
         dropOnEmpty: true,
-        connectWith:".connectedSortable"
+        connectWith:".connectedSortable",
+        update:handleDrop
+
     });
 
     //handel delete
