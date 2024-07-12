@@ -1,16 +1,20 @@
 # Prework Study Guide Webpage
 
 ## Description
-In this web application the user uses a username, title and content input box which have input validation to create a blog post. When the user clicks submit they are redericted to a blog page where all of their previous post are displayed dynamically. The user also has the option between selecting a light or a dark theme. The theme chosen will be applied until the user click on the theme button again even after closing the page and will apply to both pages. The user has the option to go back to the form page if they wish to add more posts
+In this web application the user is granted a space to add tasks and move them around depeding on wether they need to be done, they are in progress, or they have been finished. The page saves the users added tasks to local storage to prevent loosing tasks after reloading the page. The order of the tasks, lane location and colors are saved as well. The tasks are color codded: red for overdue, yellow for due within a week, and white for complete or not due for more than a week. If the user moves a task to the Done lane the color will change to white but will change color again if moved to any of the other two lanes.
 
     home page
 
-![alt text](./assets/images/image.png)
+![alt text](./Assets/homeNotask.png)
 
 
-    blog page
+    add task
 
-![alt text](./assets/images/image-1.png)
+![alt text](./Assets/addtask.png)
+
+    tasks added
+
+![alt text](./Assets/homeWtask.png)
 
 link to github pages: https://alejandrom2023.github.io/M4C_PersonalBlog/
 
