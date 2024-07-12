@@ -108,26 +108,48 @@ function renderTaskList() {
 
 // Todo: create a function to handle adding a new task
 function handleAddTask(event){
+    
     const taskTitle = $('#taskTitle').val();
     const date = dayjs($('#datepicker').val()).format('MM/DD/YYYY');
     const comment = $('#comment-input').val();
-    const task = { title: taskTitle,
-                    date: date,
-                    comment:comment,
-                    id: generateTaskId(),
-                    category: "t"
-                 };
 
-    //push the task object to the current array for use in this session
-    taskList.push(task);
-    nextId.push(task.id);
+    //input validation -> ceck fields are not empty
+    if(!(taskTitle == '') && !(date == '') && !(comment == '')){
+        const task = { title: taskTitle,
+            date: date,
+            comment:comment,
+            id: generateTaskId(),
+            category: "t"
+        };
+        
+        //push the task object to the current array for use in this session
+        taskList.push(task);
+        nextId.push(task.id);
+        
+        //save the arrays just in case user refreshes
+        localStorage.setItem('tasks',JSON.stringify(taskList));
+        localStorage.setItem('nextId',JSON.stringify(nextId));
+        
+        //add task card to the screen
+        createTaskCard(task);
+        //close modal
+        $('#formModal').modal('hide');
 
-    //save the arrays just in case user refreshes
-    localStorage.setItem('tasks',JSON.stringify(taskList));
-    localStorage.setItem('nextId',JSON.stringify(nextId));
-
-    //add task card to the screen
-    createTaskCard(task);
+    }else{
+        const modalFooter = $('#errorMsg');
+        modalFooter.html('');
+        if(taskTitle == ''){
+            modalFooter.append('Task Title is empty');
+            modalFooter.append('<br>')
+        }
+        if(date == 'Invalid Date'){
+            modalFooter.append('Date is empty');
+            modalFooter.append('<br>')
+        }
+        if(comment == ''){
+            modalFooter.append('Comment is empty');
+        }
+    }
     
     
 }
