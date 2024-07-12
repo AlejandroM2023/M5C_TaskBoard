@@ -114,7 +114,7 @@ function handleAddTask(event){
     const comment = $('#comment-input').val();
 
     //input validation -> ceck fields are not empty
-    if(!(taskTitle == '') && !(date == '') && !(comment == '')){
+    if(!(taskTitle == '') && !(date == 'Invalid Date') && !(comment == '')){
         const task = { title: taskTitle,
             date: date,
             comment:comment,
