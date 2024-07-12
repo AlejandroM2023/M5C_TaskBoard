@@ -39,7 +39,6 @@ function createTaskCard(task) {
     
     
     // all classes for proper card styling(use variable at end to specify the color)
-    
     //check for date to add color to delete button and card background
     const date = task.date;
     if(dayjs().isAfter(dayjs(date))){
@@ -57,6 +56,10 @@ function createTaskCard(task) {
     cardComment.addClass('card-text');
     cardDate.addClass('card-text');
     deleteBtn.addClass('btn btn-danger');
+
+    //add id to card
+    taskCard.data("taskId",task.id);
+
 
     taskCard.draggable({
         stack: ".task-card",
@@ -130,6 +133,20 @@ function handleAddTask(event){
 
 // Todo: create a function to handle deleting a task
 function handleDeleteTask(event){
+    //get task id and index of element in the array
+    const cardId = $(event.target).parent().parent().data("taskId");
+    const index = nextId.indexOf(cardId);
+
+    //remove from local array
+    taskList.splice(index,1);
+    nextId.splice(index,1);
+
+    //save the arrays just in case user refreshes
+    localStorage.setItem('tasks',JSON.stringify(taskList));
+    localStorage.setItem('nextId',JSON.stringify(nextId));
+
+    //remove from ui
+    $(event.target).parent().parent().remove();
 
 }
 
@@ -165,6 +182,10 @@ $(document).ready(function () {
         dropOnEmpty: true,
         connectWith:".connectedSortable"
     });
+
+    //handel delete
+    const dltArea = $('.swim-lanes');
+    dltArea.on('click','.btn-danger',handleDeleteTask);
 
     //bring in modal div and add save button fuctionality
     const taskModal = $('#formModal');
