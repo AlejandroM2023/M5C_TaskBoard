@@ -37,16 +37,26 @@ function createTaskCard(task) {
     deleteBtn.text('delete');
 
     
-    //check for date to add color to delete button and card background
-
+    
     // all classes for proper card styling(use variable at end to specify the color)
-    taskCard.addClass('card');
+    
+    //check for date to add color to delete button and card background
+    const date = task.date;
+    if(dayjs().isAfter(dayjs(date))){
+        taskCard.addClass('card bg-danger text-white my-2');
+        deleteBtn.addClass('border-white');
+    }
+    if(dayjs(date).diff(dayjs(),'day') <=7 ){
+        taskCard.addClass('card bg-warning text-white my-2');
+    }else{
+        taskCard.addClass('card bg-light my-2')
+    }
     taskCard.addClass('task-card');
     cardHeader.addClass('card-header');
     cardBody.addClass('card-body');
     cardComment.addClass('card-text');
     cardDate.addClass('card-text');
-    deleteBtn.addClass('btn btn-primary');
+    deleteBtn.addClass('btn btn-danger');
 
     taskCard.draggable({
         stack: ".task-card",
@@ -155,10 +165,6 @@ $(document).ready(function () {
         dropOnEmpty: true,
         connectWith:".connectedSortable"
     });
-
-
-
-
 
     //bring in modal div and add save button fuctionality
     const taskModal = $('#formModal');
