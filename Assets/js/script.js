@@ -11,7 +11,7 @@ function generateTaskId() {
         id += String.fromCharCode(Math.floor(Math.random() * 77) + 34);
     }
     return id;
-}
+}  
 
 // Todo: create a function to create a task card
 function createTaskCard(task) {
@@ -36,26 +36,29 @@ function createTaskCard(task) {
     cardDate.text(task.date);
     deleteBtn.text('delete');
 
-
+    
     //check for date to add color to delete button and card background
 
     // all classes for proper card styling(use variable at end to specify the color)
     taskCard.addClass('card');
+    taskCard.addClass('task-card');
     cardHeader.addClass('card-header');
     cardBody.addClass('card-body');
     cardComment.addClass('card-text');
     cardDate.addClass('card-text');
     deleteBtn.addClass('btn btn-primary');
 
+    taskCard.draggable({
+        stack: ".task-card",
+        connectToSortable: ".connectedSortable"
+    });
 
 
-
-    
 
     //bring in lists to append cards to
-    const todoList = $('#toDoSortableList');
-    const inProgressList = $('#inProgressSortableList');
-    const doneList = $('#doneSortableList');
+    const todoList = $('#todo-cards');
+    const inProgressList = $('#in-progress-cards');
+    const doneList = $('#done-cards');
 
     //check which list and add to list
     if(task.category == 't'){
@@ -77,27 +80,12 @@ function renderTaskList() {
     const inProgressList = $('#in-progress-cards');
     const doneList = $('#done-cards');
 
-    //create the sortables
-    const sortableToDo = $('<ul>');
-    const sortableInProgress = $('<ul>');
-    const sortableDone = $('<ul>');
+    //help with selecting and allow cards to move around
+    toDoList.addClass('connectedSortable h-100');
+    inProgressList.addClass('connectedSortable h-100');
+    doneList.addClass('connectedSortable h-100');
 
-    // add sortable functionality to lists
-    sortableToDo.sortable();
-    sortableInProgress.sortable();
-    sortableDone.sortable();
-
-    //add id to select for other classes
-    sortableToDo.attr('id','toDoSortableList');
-    sortableInProgress.attr('id','inProgressSortableList');
-    sortableDone.attr('id','doneSortableList');
-
-
-    //add sortable lists to page
-    toDoList.append(sortableToDo);
-    inProgressList.append(sortableInProgress);
-    doneList.append(sortableDone);
-
+    
     //loop through array to create card()
     for(const task of taskList){
         createTaskCard(task);
@@ -137,15 +125,11 @@ function handleDeleteTask(event){
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
-
+    console.log("its at the in-progress");
 }
 
 
 
-//set date box
-$( function() {
-    $( "#datepicker" ).datepicker();
-});
 
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
@@ -158,16 +142,26 @@ $(document).ready(function () {
         nextId = [];
     }
 
-    //bring in modal div
-    const taskModal = $('#formModal');
     
-
-
-
+    //render the existing tasks
     renderTaskList();
 
-    console.log(taskList);
-    //save button
+    //set date box
+    $( "#datepicker" ).datepicker();
+
+
+    //add dragable funtionality
+    $("#todo-cards,#in-progress-cards,#done-cards").sortable({
+        dropOnEmpty: true,
+        connectWith:".connectedSortable"
+    });
+
+
+
+
+
+    //bring in modal div and add save button fuctionality
+    const taskModal = $('#formModal');
     taskModal.on('click','.btnSubmit',handleAddTask);
 
 });
