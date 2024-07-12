@@ -41,11 +41,11 @@ function createTaskCard(task) {
     // all classes for proper card styling(use variable at end to specify the color)
     //check for date to add color to delete button and card background
     const date = task.date;
-    if(dayjs().isAfter(dayjs(date))){
+    if(dayjs().isAfter(dayjs(date))&&task.category!='d'){
         taskCard.addClass('card bg-danger text-white my-2');
         deleteBtn.addClass('border-white');
     }
-    if(dayjs(date).diff(dayjs(),'day') <=7 ){
+    if(dayjs(date).diff(dayjs(),'day') <=7 &&task.category!='d'){
         taskCard.addClass('card bg-warning text-white my-2');
     }else{
         taskCard.addClass('card bg-light my-2')
@@ -177,7 +177,7 @@ function handleDeleteTask(event){
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
-
+    console.log(ui.item.attr('class'));
     //get array of items for every sortable list
     const combineArr = $('#todo-cards').sortable("toArray").concat($('#in-progress-cards').sortable("toArray"),$('#done-cards').sortable("toArray"));
 
@@ -185,15 +185,28 @@ function handleDrop(event, ui) {
     //get moved item
     const taskItem = taskList.find((element)=> element.id == ui.item.attr('id'));
     const itemIndex = taskList.indexOf(taskItem);
-
+    const date = taskItem.date
     //change category
     if(event.target.id =='todo-cards' && taskItem.category !== 't'){
+        if(dayjs().isAfter(dayjs(date)) || dayjs(date).diff(dayjs(),'day') <=7){
+            ui.item.children().removeClass('bg-light');
+            ui.item.addClass('text-white');
+        }
         taskItem.category = 't';
+
     }else if(event.target.id =='in-progress-cards' && taskItem.category !== 'i'){
+        if(dayjs().isAfter(dayjs(date)) || dayjs(date).diff(dayjs(),'day') <=7){
+            ui.item.children().removeClass('bg-light');
+            ui.item.addClass('text-white');
+        }
         taskItem.category = 'i';
     }else if(event.target.id =='done-cards' && taskItem.category !== 'd'){
+        
         taskItem.category = 'd';
+        ui.item.children().addClass('bg-light');
+        ui.item.removeClass('text-white');
     }
+
 
     //update task item in array
     taskList[itemIndex] = taskItem;
